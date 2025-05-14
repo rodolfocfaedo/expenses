@@ -1,7 +1,9 @@
 ```markdown
 
 **Author**: Rodolfo Cunhasque Faedo
-**Contact**: 📧 <a href="mailto:faedorodolfo.programming@gmail.com">faedorodolfo.programming@gmail.com</a>
+<a href="mailto:faedorodolfo.programming@gmail.com">
+  <button style="background-color: #2DA44E; color: white; padding: 8px 16px; border: none; border-radius: 6px;">📧 Contact Me</button>
+</a>
 
 # Expenses Management API
 
