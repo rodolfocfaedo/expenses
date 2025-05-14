@@ -3,8 +3,10 @@ package com.rodolfocf.expenses.business;
 import com.rodolfocf.expenses.business.dto.ExpenseDTO;
 import com.rodolfocf.expenses.business.mapper.IExpenseMapper;
 import com.rodolfocf.expenses.infrastructure.entities.Expense;
+import com.rodolfocf.expenses.infrastructure.enums.ExpenseCategory;
 import com.rodolfocf.expenses.infrastructure.repository.IExpenseRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -35,8 +37,8 @@ public class ExpenseService {
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
-    public List<ExpenseDTO> findExpensesBetween(LocalDate startDate, LocalDate endDate){
-        List<Expense> expenses = expenseRepository.findByDateBetween(startDate, endDate);
+    public List<ExpenseDTO> findExpensesBetween(LocalDate startDate, LocalDate endDate, Sort sort){
+        List<Expense> expenses = expenseRepository.findByDateBetween(startDate, endDate, sort);
         return expenses.stream().map(expenseMapper :: toDTO).toList();
     }
 
@@ -44,6 +46,11 @@ public class ExpenseService {
         List<Expense> expenses = expenseRepository.findByDateBetween(startDate, endDate);
         return expenses.stream().map(Expense::getAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public List<ExpenseDTO> findByExpenseCategory(ExpenseCategory expenseCategory){
+        List<Expense> expenses = expenseRepository.findByExpenseCategory(expenseCategory);
+        return expenses.stream().map(expenseMapper :: toDTO).toList();
     }
 
     public void deleteExpenseById(Long id){
