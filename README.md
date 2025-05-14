@@ -1,7 +1,7 @@
 ```markdown
 
 **Author**: Rodolfo Cunhasque Faedo
-**Contact**: 📧 <faedorodolfo.programming@gmail.com> 
+**Contact**: 📧 <a href="mailto:faedorodolfo.programming@gmail.com">faedorodolfo.programming@gmail.com</a>
 
 # Expenses Management API
 
