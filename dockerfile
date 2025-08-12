@@ -4,26 +4,28 @@ FROM openjdk:21-jdk-slim
 # Definir diretório de trabalho
 WORKDIR /app
 
-# Copiar Gradle Wrapper e arquivos de build
+# Copiar arquivos do Gradle
 COPY gradle gradle
 COPY gradlew .
+COPY gradle.properties .
 COPY build.gradle .
 COPY settings.gradle .
 
-# Copiar o código-fonte
+# Copiar código-fonte
 COPY src src
 
-# Garantir permissão de execução do gradlew
+# Dar permissão de execução ao Gradle Wrapper
 RUN chmod +x ./gradlew
 
-# Fazer build da aplicação (sem rodar testes)
+# Gerar o JAR da aplicação
 RUN ./gradlew clean bootJar -x test
 
-# Expor a porta usada pelo Render
-EXPOSE 10000
-
-# Definir variável de ambiente para a porta
+# Definir variável de ambiente para o Render
 ENV PORT=10000
 
-# Rodar a aplicação
-CMD ["java", "-jar", "-Dserver.port=${PORT}", "build/libs/expenses.jar"]
+# Expor a porta (opcional para Render, mas útil localmente)
+EXPOSE ${PORT}
+
+# Executar o aplicativo
+# Detecta automaticamente o nome do jar gerado
+CMD ["sh", "-c", "java -jar -Dserver.port=${PORT} build/libs/*.jar"]
