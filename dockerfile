@@ -1,30 +1,29 @@
-# Use OpenJDK 21
+# Usar OpenJDK 21
 FROM openjdk:21-jdk-slim
 
-# Set working directory
+# Definir diretório de trabalho
 WORKDIR /app
 
-# Copy gradle wrapper and build files
+# Copiar Gradle Wrapper e arquivos de build
 COPY gradle gradle
 COPY gradlew .
-COPY gradle.properties .
 COPY build.gradle .
 COPY settings.gradle .
 
-# Copy source code
+# Copiar o código-fonte
 COPY src src
 
-# Make gradlew executable
+# Garantir permissão de execução do gradlew
 RUN chmod +x ./gradlew
 
-# Build the application
+# Fazer build da aplicação (sem rodar testes)
 RUN ./gradlew clean bootJar -x test
 
-# Expose port that Render will use
+# Expor a porta usada pelo Render
 EXPOSE 10000
 
-# Set environment variable for port
+# Definir variável de ambiente para a porta
 ENV PORT=10000
 
-# Run the application
+# Rodar a aplicação
 CMD ["java", "-jar", "-Dserver.port=${PORT}", "build/libs/expenses.jar"]
