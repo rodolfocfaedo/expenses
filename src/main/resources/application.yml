@@ -28,15 +28,13 @@ spring:
       ddl-auto: update
 
 ---
-# Perfil de produção (Render)
+# Perfil de produção (Render) - SIMPLIFICADO
 spring:
   config:
     activate:
       on-profile: prod
   datasource:
     url: ${DATABASE_URL}
-    username: ${POSTGRES_USER}
-    password: ${POSTGRES_PASSWORD}
     driver-class-name: org.postgresql.Driver
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
