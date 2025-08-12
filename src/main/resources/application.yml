@@ -51,3 +51,9 @@ logging:
     com.rodolfocf: INFO
     org.hibernate: WARN
     org.springframework.security: INFO
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
