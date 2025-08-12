@@ -34,6 +34,8 @@ public class SecurityConfig {
                                 .maxAgeInSeconds(31536000)
                                 .includeSubDomains(true)))
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers("/").permitAll()                    // Página inicial
+                        .requestMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll() // Swagger
                         .requestMatchers("/usuario/login").permitAll()
                         .requestMatchers("/auth").permitAll()
                         .requestMatchers(HttpMethod.POST, "/usuario").permitAll()
