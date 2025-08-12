@@ -5,21 +5,19 @@ spring:
   profiles:
     active: ${SPRING_PROFILES_ACTIVE:dev}
 
-# Configuração do JWT
 jwt:
   secret-key: ${JWT_SECRET_KEY:devDefaultKeyForLocalOnly1234567890123456789012345678901234567890}
   expiration: ${JWT_EXPIRATION:PT2H}
 
 ---
-# Perfil de desenvolvimento (local)
 spring:
   config:
     activate:
       on-profile: dev
   datasource:
-    url: jdbc:postgresql://localhost:5432/expenses_db
-    username: postgres
-    password: 9951
+    url: jdbc:postgresql://dpg-d2dl253uibrs739qq5f0-a.oregon-postgres.render.com/expenses_rn6n
+    username: expenses_rn6n_user
+    password: fPSeoKfjW49koKsukyCttW8lRxSopOOt
     driver-class-name: org.postgresql.Driver
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
@@ -28,25 +26,19 @@ spring:
       ddl-auto: update
 
 ---
-# Perfil de produção (Render) - SIMPLIFICADO
 spring:
   config:
     activate:
       on-profile: prod
   datasource:
-    url: ${DATABASE_URL}
+    url: ${JDBC_DATABASE_URL}
     driver-class-name: org.postgresql.Driver
   jpa:
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     show-sql: false
     hibernate:
       ddl-auto: update
-    properties:
-      hibernate:
-        dialect: org.hibernate.dialect.PostgreSQLDialect
-        format_sql: false
 
-# Swagger/OpenAPI (funciona em ambos os perfis)
 springdoc:
   api-docs:
     path: /api-docs
