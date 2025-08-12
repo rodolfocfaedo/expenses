@@ -41,7 +41,8 @@ public class SecurityConfig {
                         .requestMatchers(HttpMethod.POST, "/usuario").permitAll()
                         .requestMatchers("/actuator/health").permitAll()
                         .requestMatchers("/h2-console/**").permitAll()
-                        .anyRequest().authenticated())
+                        //.anyRequest().authenticated())
+                        .anyRequest().permitAll())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .addFilterBefore(jwtRequestFilter, UsernamePasswordAuthenticationFilter.class);
 
