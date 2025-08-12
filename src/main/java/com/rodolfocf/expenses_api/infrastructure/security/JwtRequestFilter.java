@@ -77,8 +77,13 @@ public class JwtRequestFilter extends OncePerRequestFilter {
     @Override
     protected boolean shouldNotFilter(HttpServletRequest request) {
         String path = request.getServletPath();
-        return path.contains("/actuator/health")
-                || (path.equals("/usuario") && request.getMethod().equals("POST"))
-                || path.equals("/usuario/login");
+        logger.debug("🛡️ Verificando se deve pular filtro para: {} ({})", path, request.getMethod());
+
+        return path.equals("/actuator/health") ||
+                path.equals("/user/login") ||
+                path.equals("/auth") ||
+                (path.equals("/user") && "POST".equalsIgnoreCase(request.getMethod())) ||
+                path.startsWith("/swagger-ui") ||
+                path.startsWith("/v3/api-docs");
     }
 }
