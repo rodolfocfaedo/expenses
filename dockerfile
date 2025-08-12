@@ -1,32 +1,30 @@
-# Etapa 1: Build do projeto com Gradle
-FROM eclipse-temurin:21-jdk AS build
+# Use OpenJDK 21
+FROM openjdk:21-jdk-slim
+
+# Set working directory
 WORKDIR /app
 
-# Copia os arquivos de configuração primeiro (cache mais eficiente)
-COPY gradlew .
+# Copy gradle wrapper and build files
 COPY gradle gradle
+COPY gradlew .
+COPY gradle.properties .
 COPY build.gradle .
 COPY settings.gradle .
 
-# Baixa as dependências antes de copiar todo o código
-RUN ./gradlew dependencies --no-daemon || true
+# Copy source code
+COPY src src
 
-# Agora copia o código-fonte
-COPY . .
+# Make gradlew executable
+RUN chmod +x ./gradlew
 
-# Gera o JAR final
-RUN ./gradlew bootJar --no-daemon
+# Build the application
+RUN ./gradlew clean bootJar -x test
 
-# Etapa 2: Imagem final
-FROM eclipse-temurin:21-jre
-WORKDIR /app
+# Expose port that Render will use
+EXPOSE 10000
 
-# Copia o JAR da etapa anterior
-COPY --from=build /app/build/libs/expenses.jar app.jar
+# Set environment variable for port
+ENV PORT=10000
 
-# Porta do Render
-ENV PORT=8080
-EXPOSE 8080
-
-# Comando para iniciar a aplicação
-ENTRYPOINT ["java", "-jar", "expenses.jar"]
+# Run the application
+CMD ["java", "-jar", "-Dserver.port=${PORT}", "build/libs/expenses.jar"]
